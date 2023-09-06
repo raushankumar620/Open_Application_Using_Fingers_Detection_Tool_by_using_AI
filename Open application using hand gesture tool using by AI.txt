@@ -1,0 +1,45 @@
+import os
+import cv2
+from cvzone.HandTrackingModule import HandDetector
+
+cap = cv2.VideoCapture( 0 )
+
+# click photo
+# status , photo = cap.read()
+
+detector = HandDetector()
+
+while True:
+    status , photo = cap.read()
+    cv2.imshow("my photo" , photo)
+    if cv2.waitKey(100) == 13:
+        break
+
+    handphoto = detector.findHands(photo , draw=False)
+    lmlist = handphoto[0]
+    fingerstatus = detector.fingersUp(lmlist)
+
+    if fingerstatus == [1,1,1,1,1]:
+        print("all up")
+        os.system(" start chrome https://web.whatsapp.com") # five finger up open in whatsapp
+    elif fingerstatus == [ 0 ,1 ,0,0,0 ]:
+        print("index finger up")
+        os.system("start chrome https://www.google.com") # one finger up open in google
+
+    elif fingerstatus == [ 0 , 1, 1, 0 , 0 ]:
+        print("index and middle finger up")
+        os.system("start chrome https://www.youtube.com") #open two finger up open in youtube
+    
+    elif fingerstatus == [ 0 , 1, 1, 1 , 0 ]:
+        print("index and middle finger up")
+        os.system("start chrome https://www.amazon.com") #open three finger up open in amozon
+   
+    elif fingerstatus == [ 0 , 1, 1, 1 , 1 ]:
+        print("index and middle finger up")
+        os.system("start chrome https://mygyanvihar.com") #open four finger up open in lms in sgvu
+           
+    else:
+        print("hi")
+    
+cap.release()
+cv2.destroyAllWindows()
